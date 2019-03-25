@@ -17,6 +17,7 @@
             - [AdResponse 字段信息](#adresponse-字段信息)
                 - [seatbid 对象信息](#seatbid-对象信息)
                     - [bid 对象信息](#bid-对象信息)
+            - [素材格式](#素材格式)
             - [上报地址宏替换信息](#上报地址宏替换信息)
             - [不填充广告原因](#不填充广告原因)
 
@@ -63,9 +64,9 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | 字段名称 | 类型 | 必须 | 描述 |
 | --- | --- | --- | --- |
 | id | string | 是 | 唯一曝光id |
-| instl | string | 是 | 广告位类型 |
+| instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 原生 |
 | tagid | string | 是 | 广告位id |
-| secure | string | 否 | 是否需要 https 链接的标识，默认为 0<br>0- 不需要<br>1- 需要 |
+| secure | integer | 否 | 是否需要 https 链接的标识，默认为 0<br>0- 不需要<br>1- 需要 |
 
 ##### app 对象信息
 
@@ -75,9 +76,8 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | name | string | 是 | APP 名称 |
 | domain | string | 否 | APP 官网域名 |
 | ver | string | 是 | APP 版本号 |
-| cat | array of integer | 是 | APP 类型 |
 | bundle | string | 是 | BundleID 或者包名 |
-| paid | integer | 否 | 是否为付费 APP<br>0- 不是<br>1- 是付费<br>2- 应用内付费 |
+| paid | integer | 否 | 是否为付费 APP<br>0- 不是<br>1- 是<br>2- 应用内付费 |
 | keywords | string | 否 | APP 关键字，可以用英文逗号分隔多个 |
 | storeurl | string | 否 | APP 在应用市场的下载地址 |
 
@@ -157,20 +157,62 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | cid | string | 是 | 创意id |
 | w | integer | 否 | 广告物料宽度，单位：像素 |
 | h | integer | 否 | 广告物料高度，单位：像素 |
-| adm | string | 是 | 素材，详情见[素材格式](#素材格式)<br>图片类（HTML）：HTML<br>图片类（图片）：JSON<br>原生：JSON |
+| adm | string | 是 | 素材，详情见[素材格式](#素材格式)<br>图片类（HTML）：HTML<br>图片类（图片+落地页）：JSON<br>原生：JSON |
 | ext | object | 是 | 扩展字段 |
-| ext.instl | integer | 是 | 广告位类型 |
+| ext.instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 原生 |
 | ext.interact_type | integer | 是 | 用户点击行为<br>1- 浏览网页<br>2- 下载应用 |
-| ext.instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 信息流 |
-| ext.ad_logo | string | 是 | 广告来源LOGO图片 |
-| ext.ad_icon | string | 是 | "广告"字样图片 |
-| ext.deeplink | string | 是 | deeplink |
+| ext.ad_logo | string | 否 | 广告来源LOGO图片 |
+| ext.ad_icon | string | 否 | "广告"字样图片 |
+| ext.deeplink | string | 否 | deeplink<br>如果终端安装了对应的APP，则跳转到deeplink<br>如果没有安装，则跳转普通落地页 |
 | ext.imp_t | array of string | 否 | 曝光监测，可能有多条，需要依次上报<br>监测链接中可能有宏，需要开发者替换，见[上报地址宏替换信息](#上报地址宏替换信息) |
 | ext.clk_t | array of string | 否 | 点击监测，可能有多条，需要依次上报<br>监测链接中可能有宏，需要开发者替换，见[上报地址宏替换信息](#上报地址宏替换信息) |
 | ext.ds_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用下载开始监测，可能有多条，需要依次上报 |
 | ext.dc_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用下载完成监测，可能有多条，需要依次上报 |
 | ext.ic_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用安装完成监测，可能有多条，需要依次上报 |
 | ext.op_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用打开监测，可能有多条，需要依次上报 |
+
+#### 素材格式
+- 图片类（图片+落地页）
+```json
+{
+    // 图片地址
+    "url": "",
+    // 落地页
+    "ldp": ""
+}
+```
+
+- 原生
+```json
+{
+    // 标题
+    "title": "",
+    // 描述
+    "desc": "",
+    // 大图（可能有单图或三图）
+    "img": [
+        {
+            // 图片地址
+            "url": ""
+        },
+        {
+            // 图地址
+            "url": ""
+        },
+        {
+            // 图地址
+            "url": ""
+        }
+    ],
+    // 图标
+    "icon": {
+        // 图标地址
+        "url": ""
+    },
+    // 落地页
+    "ldp": ""
+}
+```
 
 #### 上报地址宏替换信息
 
