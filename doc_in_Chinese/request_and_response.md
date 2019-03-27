@@ -87,9 +87,9 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | --- | --- | --- | --- |
 | dnt | integer | 否 | 0-允许广告追踪；1-不允许广告追踪 |
 | ua | string | 是 | 移动设备的 User-Agent |
-| ip | string | 是 | 客户端IP地址。如果从客户端直接发起请求，该字段可填空；如果从服务端发起请求，请填写客户端的IP |
+| ip | string | 是 | 客户端IP地址。如果从客户端直接发起请求，该字段可填空字符串；如果从服务端发起请求，请填写客户端的IP |
 | ipv6 | string | 否 | ipv6 |
-| geo | object | 是 | 地理位置信息对象 |
+| geo | object | 否 | 地理位置信息对象 |
 | geo.lat | float | 否 | 纬度 |
 | geo.lon | float | 否 | 经度 |
 | geo.timestamp | integer | 否 | 获取经纬度数据时的时间戳 |
@@ -106,7 +106,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | ppi | float | 是 | 每英寸像素密度 |
 | carrier | string | 是 | 设备使用的运营商：MCC+MNC的值。没有则为空字符串。参考`http://en.wikipedia.org/wiki/Mobile_Network_Code` |
 | language | string | 否 | 设备的语言设置,使用 `alpha-2/ISO 639-1` |
-| js | integer | 是 | 是否支持 Javascript 脚本<br>1-支持<br>0-不支持 |
+| js | integer | 否 | 是否支持 Javascript 脚本<br>1-支持<br>0-不支持 |
 | connectiontype | integer | 是 | 设备联网类型<br>1- wifi<br>2- 2G<br>3- 3G<br>4- 4G |
 | ext | object | 是 | 扩展字段 |
 | ext.orientation | integer | 否 | 设备屏幕方向<br>0- 竖向<br>1- 横向 |
@@ -141,7 +141,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | 字段名称 | 类型 | 必须 | 描述 |
 | --- | --- | --- | --- |
 | id | string | 是 | 对应请求中的唯一请求id |
-| nbr | integer | 否 | 无广告填充时返回，不填充的原因，详情见[不填充广告原因](#不填充广告原因) |
+| nbr | integer | 否 | 无正式广告填充时返回，不填充的原因，详情见[不填充广告原因](#不填充广告原因) |
 | seatbid | array of object | 否 | 有广告填充时返回，广告信息 |
 
 ##### seatbid 对象信息
@@ -239,6 +239,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | --- | --- |
 | 101 | 返回测试广告 |
 | 102 | 无测试广告且无正式广告返回 |
+| 104 | BidRequest 解析 JSON 失败 |
 | 105 | 广告位id无效 |
 | 301 | device.ext.imei 缺失 |
 | 302 | device.ext.androidid 缺失 |
@@ -262,6 +263,11 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | 328 | device.devicetype 无效 |
 | 341 | imp.instl 缺失 |
 | 342 | imp.instl 无效 |
+| 351 | 请求id 缺失 |
+| 352 | 曝光id 缺失 |
+| 353 | device.ua 缺失 |
+| 354 | device.ext.ppi 缺失 |
+| 355 | device.ext.density 缺失 |
 | 410 | device.ext.anid 格式错误 |
 | 411 | device.ext.imei 格式错误 |
 | 412 | device.ip 格式错误 |
