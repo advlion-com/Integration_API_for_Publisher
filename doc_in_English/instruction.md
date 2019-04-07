@@ -1,21 +1,18 @@
-# 对接步骤
+# STEPS OF INTEGRATION
 
-1. 提供应用信息
+1. Provide your application information
 
-    包括但不止于应用名称、包名、下载地址、广告位截图、广告位支持物料类型（图片或html等）、是否支持点击监测中宏替换、是否支持 deeplink、应用 DAU 等，用于玉米交易平台的接入评估。
+    Including but not limit app name, app bundle ID , download URL, snapshot of ad_slot,types of material(jpg, jpeg, png, gif, html and so on),whether substitution macros are supported,whether deeplink is supported,whether app DAU is provided and so on.AdVlion ADX evaluates the integration's priority and importance through these information.
 
-2. 获取账号
+2. Get your account
 
-    与 AdVlion ADX 平台的商务人员沟通开始合作后，商务人员提供登陆后台和账号密码。开发者（SSP）可自行在后台创建媒体和广告位。
+    Please contact AdVlion ADX account manager and confirm the cooperation.Account manager will provide AdVlion ADX website.You can register your account and password by clicking register now  button on http://mammut.vlion.cn/ .The last,you can create your app and adspace by yourself.
 
-3. 根据对接协议开发
+3. Understand integration documentation
 
-    根据 [SSP对接文档协议](request_and_response.md) ，结合 [广告请求和返回json示例](sample_of_request_and_response.md) ，开始开发。开发完毕后，联系运营人员配置测试广告，如果测试广告可以正常展示和点击，则对接成功。
+    Viewing request_and_response.md to understand Advlion ADX documentation ,for reference,please view sample_of_request_and_response.md to start developing.After finishing all development jobsï¼contacting  operator to set test ads. If the ad shows and clicks normally, the integration would be successful.
 
-4. 小流量测试
+4. Develop and test
 
-    联系运营人员开始小流量测试。媒体放少量流量给到 AdVlion ADX 平台，核对请求数、展示、点击等数据是否一致。
+    Contacting  operator to test with a little online inventory in AdVlion ADX. Please make sure the statistics data (including ad requests,ad impressions,clicks and so on) is correct and then deploy the integration.
 
-5. 正式上线对接
-
-    沟通确认没问题后，开始正式上线。
