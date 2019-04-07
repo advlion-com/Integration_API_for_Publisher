@@ -1,5 +1,6 @@
-# 文档更新记录
+# Document updated records
 
-| 版本 | 作者 | 时间 | 备注 |
+| version | editor | date | Content |
 | --- | --- | --- | --- |
-| F-1.0 | mi | 2019.03.22 | 创建 |
+| F-1.0 | mi | 2019.03.22 | create this api of integration |
+
