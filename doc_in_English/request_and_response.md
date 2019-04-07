@@ -1,270 +1,277 @@
-# SSP 对接文档协议
+# API OF INTEGRATION
 
-- [SSP 对接文档协议](#ssp-对接文档协议)
-    - [文档说明](#文档说明)
-    - [接入准备](#接入准备)
-    - [接入说明](#接入说明)
-        - [请求 URL](#请求-url)
-        - [通信方式及编码](#通信方式及编码)
-        - [广告请求](#广告请求)
-            - [请求头](#请求头)
-            - [AdRequest 字段信息](#adrequest-字段信息)
-                - [imp 对象信息](#imp-对象信息)
-                - [app 对象信息](#app-对象信息)
-                - [device 对象信息](#device-对象信息)
-                - [user 对象信息](#user-对象信息)
-        - [广告返回](#广告返回)
-            - [AdResponse 字段信息](#adresponse-字段信息)
-                - [seatbid 对象信息](#seatbid-对象信息)
-                    - [bid 对象信息](#bid-对象信息)
-            - [素材格式](#素材格式)
-            - [上报地址宏替换信息](#上报地址宏替换信息)
-            - [不填充广告原因](#不填充广告原因)
+- [API OF INTEGRATION](#api-of-integration)
+    - [Introduction of document](#introduction-of-document)
+    - [Preparation before integration](#preparation-before-integration)
+    - [Instruction](#instruction)
+        - [URL of request](#url-of-request)
+        - [Communication Mode and Encoding](#communication-mode-and-encoding)
+        - [Request](#request)
+            - [Request header](#request-header)
+            - [AdRequest field](#adrequest-field)
+                - [imp information](#imp-information)
+                - [app information](#app-information)
+                - [device information](#device-information)
+                - [user information](#user-information)
+        - [Responce](#responce)
+            - [AdResponse information](#adresponse-information)
+                - [seatbid information](#seatbid-information)
+                    - [bid information](#bid-information)
+            - [Creative forms](#creative-forms)
+            - [Report click-macro information](#report-click-macro-information)
+            - [Ad response failed reason](#ad-responce-failed-reason)
 
-## 文档说明
+## Introduction of document
 
-此文档仅供开发者或 SSP 与 AdVlion 交易平台（ADX） 使用 API 方式对接时使用。
+This specification is for publishers to integrate with Advlion ADX via API.
 
-## 接入准备
+## Preparation before integration
 
-在 开发者（SSP）和 AdVlion交易平台（ADX） 商务人员沟通后，由 AdVlion交易平台（ADX）商务人员提供 开发者 账号和密码。
+Please get the developer account and password through asking for Advlion Adx account manager.
 
-## 接入说明
+## Instruction
 
-### 请求 URL
+### URL of request
 
-当需要请求广告时，发送一个 HTTP POST 请求到下面的地址`http://adx.advlion.com/ssp`
+When there is need to request ad, send a HTTP POST to the following address: `http://adx.advlion.com/ssp`
 
-### 通信方式及编码
+### Communication Mode and Encoding
 
-ADX 和 开发者（SSP） 之间的基础通信协议采用 HTTP 协议、POST 方法，数据使用 JSON 格式，编码采用 UTF-8 编码。
+The underlying communication protocol between Advlion ADX and SSP is HTTP, POST method, data using JSON format, UTF-8 encoding.
 
-### 广告请求
+### Request
 
-AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规定 URL 向 ADX 发送。
+The Ad Request is a request sent by the SSP to Advlion ADX to call for an ad, via the Request URL noted above.
 
-#### 请求头
+#### Request header
 
-| http 头信息段 | 说明  |
+| http herder information | instruction  |
 | --- | --- |
-| X-Protocol-Ver | 文档版本号，F-1.0 |
+| X-Protocol-Ver | document version，F-1.0 |
 
-#### AdRequest 字段信息
+#### Request field
 
-| 字段名称 | 类型 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| id | string | 是| 唯一请求id |
-| imp | array of object | 是 | 请求广告的信息 |
-| app | object | 是 | APP 信息 |
-| device | object | 是 | 设备信息 |
-| user | object | 否 | 用户信息 |
+| id | string | yes| unique request id   |
+| imp | array of object | yes | Ad information |
+| app | object | yes | app information |
+| device | object | yes | device information |
+| user | object | no | user information |
 
-##### imp 对象信息
+##### Imp information
 
-| 字段名称 | 类型 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| id | string | 是 | 唯一曝光id |
-| instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 原生 |
-| tagid | string | 是 | 广告位id |
-| secure | integer | 否 | 是否需要 https 链接的标识，默认为 0<br>0- 不需要<br>1- 需要 |
+| id | string | yes | unique imp id |
+| instl | integer | yes | adspace type<br>0- banner<br>1- interstitial<br>2- full Screen <br>3- native  |
+| tagid | string | yes | adspace id |
+| secure | integer | no |Flag to indicate if the impression requires secure HTTPS URL creative assets and markup, where 0 = nonsecure, 1 = secure. If omitted, the secure state is unknown, but non-secure HTTP support can be assumed. <br>0- creative from http url <br>1-  creative from https url  |
 
-##### app 对象信息
+##### App information
 
-| 字段名称 | 类型 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| id | string | 是 | 媒体 ID，注册 ADX 平台生成的 ID |
-| name | string | 是 | APP 名称 |
-| domain | string | 否 | APP 官网域名 |
-| ver | string | 是 | APP 版本号 |
-| bundle | string | 是 | BundleID 或者包名 |
-| paid | integer | 否 | 是否为付费 APP<br>0- 不是<br>1- 是<br>2- 应用内付费 |
-| keywords | string | 否 | APP 关键字，可以用英文逗号分隔多个 |
-| storeurl | string | 否 | APP 在应用市场的下载地址 |
+| id | string | yes | app ID，unique indentifier of an app which is given after registering app in Advlion publisher UI  (http://mammut.vlion.cn). |
+| name | string | yes | APP name |
+| domain | string | no | APP official website |
+| ver | string | yes | APP version |
+| bundle | string | yes | BundleID or package name |
+| paid | integer | no | whether need to pay for APP download <br>0- no<br>1- yes<br>2- pay in app |
+| keywords | string | no | APP keywords can be separated by commas  |
+| storeurl | string | no | APP adress in app download store |
 
-##### device 对象信息
+##### Device information
 
-| 字段名称  | 类型 | 必须 | 描述 |
+| parameter  | type | mandatory | description |
 | --- | --- | --- | --- |
-| dnt | integer | 否 | 0-允许广告追踪；1-不允许广告追踪 |
-| ua | string | 是 | 移动设备的 User-Agent |
-| ip | string | 是 | 客户端IP地址。如果从客户端直接发起请求，该字段可填空；如果从服务端发起请求，请填写客户端的IP |
-| ipv6 | string | 否 | ipv6 |
-| geo | object | 是 | 地理位置信息对象 |
-| geo.lat | float | 否 | 纬度 |
-| geo.lon | float | 否 | 经度 |
-| geo.timestamp | integer | 否 | 获取经纬度数据时的时间戳 |
-| geo.country | string | 否 | 国家，使用 `ISO-3166-1 Alpha-3` |
-| geo.region | string | 否 | 地区，使用 `ISO 3166-2` |
-| geo.city | string | 否 | 城市，使用`http://www.unece.org/cefact/locode/service/location.html` |
-| devicetype | integer | 是 | 设备类型<br>1- 手机<br>2- 平板 |
-| make | string | 是 | 设备制造商 |
-| model | string | 是 | 设备型号 |
-| os | string | 是 | 设备操作系统，二选一填写 Android 或 iOS |
-| osv | string | 是 | 设备操作系统版本号 |
-| w | integer | 是 | 设备屏幕分辨率宽，单位为像素 |
-| h | integer | 是 | 设备屏幕分辨率高，单位为像素 |
-| ppi | float | 是 | 每英寸像素密度 |
-| carrier | string | 是 | 设备使用的运营商：MCC+MNC的值。没有则为空字符串。参考`http://en.wikipedia.org/wiki/Mobile_Network_Code` |
-| language | string | 否 | 设备的语言设置,使用 `alpha-2/ISO 639-1` |
-| js | integer | 是 | 是否支持 Javascript 脚本<br>1-支持<br>0-不支持 |
-| connectiontype | integer | 是 | 设备联网类型<br>1- wifi<br>2- 2G<br>3- 3G<br>4- 4G |
-| ext | object | 是 | 扩展字段 |
-| ext.orientation | integer | 否 | 设备屏幕方向<br>0- 竖向<br>1- 横向 |
-| ext.imei | string | 否 | Android 设备必填，IMEI 值 |
-| ext.idfa | string | 否 | iOS 设备必填，IDFA 值 |
-| ext.androidid | string | 否 | Android 设备选填，AndroidID |
-| ext.mac | string | 是 | MAC 值，没有填空字符串 |
-| ext.imsi | string | 否 | 国际移动用户识别码，储存在 SIM 卡中 |
-| ext.battery | integer | 否 | 设备电量百分比，取整数，数值区间 0~100 |
-| ext.density | float | 是 | 设备屏幕像素密度 |
+| dnt | integer | no | 0- allow ad tracking；1-prohibit ad tracking |
+| ua | string | yes | User-Agent of mobile device |
+| ip | string | yes | IP adress of client device. It is required when request via S2S.If the request is initiated directly from the client side, the field can be filled in with an empty string. |
+| ipv6 | string | no | ipv6 |
+| geo | object | no | geographic location informatiom |
+| geo.lat | float | no | latitude  |
+| geo.lon | float | no | longitude |
+| geo.timestamp | integer | no | timestamp when obtaining latitude and longitude data |
+| geo.country | string | no | country,using `ISO-3166-1 Alpha-3` |
+| geo.region | string | no | area,using `ISO 3166-2` |
+| geo.city | string | no | city,using`http://www.unece.org/cefact/locode/service/location.html` |
+| devicetype | integer | yes | device type<br>1- mobilephone <br>2- Tablet PC |
+| make | string | yes | manufacturer, e.g. “Samsung” |
+| model | string | yes | device model |
+| os | string | yes | Operation system, "ios" or  "android" |
+| osv | string | yes | Operation system version |
+| w | integer | yes | Device screen width, unit:pixel. If not passed, fill rate will be affected. |
+| h | integer | yes | Device screen height, unit:pixel. If not passed, fill rate will be affected. |
+| ppi | float | yes | Physical pixel density |
+| carrier | string | yes | Mobile device carrier ：MCC+MNC. If there is no value of MCC+MNC, the field can be filled in with an empty string. view`http://en.wikipedia.org/wiki/Mobile_Network_Code` |
+| language | string | no | Device language settings,use `alpha-2/ISO 639-1` |
+| js | integer | no | whether Javascript is supported<br>1-yes<br>0-no |
+| connectiontype | integer | yes | network connection type <br>1- wifi<br>2- 2G<br>3- 3G<br>4- 4G |
+| ext | object | yes | expansion field  |
+| ext.orientation | integer | no | Device orientation<br>0- portrait<br>1- landscape |
+| ext.imei | string | no | Unique identifer of android device. |
+| ext.idfa | string | no | Unique identifer of ios device. |
+| ext.androidid | string | no | AndroidID is used to identify your device for market downloads |
+| ext.mac | string | yes | MAC value,empty means unknown. |
+| ext.imsi | string | no | international Mobile User identifer, which is stored in SIM card  |
+| ext.battery | integer | no | Battery volume of the device, integer from 0~100%  |
+| ext.density | float | yes | Device screen density  |
 
-##### user 对象信息
+##### User information
 
-| 字段名称 | 类别 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| id | string | 否 | 用户唯一 ID |
-| yob | integer | 否 | 出生年，4 位数字 |
-| gender | string | 否 | 性别<br>M- Male<br>F- Female<br>O- Other<br>Null- Unknown |
-| geo | object | 否 | 用户家庭位置 |
-| geo.lat | float | 否 | 纬度 |
-| geo.lon | float | 否 | 经度 |
-| geo.timestamp | integer | 否 | 获取经纬度数据时的时间戳 |
-| geo.country | string | 否 | 国家，使用 `ISO-3166-1 Alpha-3` |
-| geo.region | string | 否 | 地区，使用 `ISO 3166-2` |
-| geo.city | string | 否 | 城市，使用`http://www.unece.org/cefact/locode/service/location.html` |
+| id | string | no | user id |
+| yob | integer | no | Year of birth, 4 digits |
+| gender | string | no | gender<br>M- Male<br>F- Female<br>O- Other<br>Null- Unknown |
+| geo | object | no | geographic location informatiom |
+| geo.lat | float | no | latitude |
+| geo.lon | float | no | longitude |
+| geo.timestamp | integer | no | timestamp when obtaining latitude and longitude data |
+| geo.country | string | no | country,use `ISO-3166-1 Alpha-3` |
+| geo.region | string | no | area,use `ISO 3166-2` |
+| geo.city | string | no | city,use`http://www.unece.org/cefact/locode/service/location.html` |
 
 
-### 广告返回
+### AdResponse
 
-#### AdResponse 字段信息
+#### AdResponse field
 
-| 字段名称 | 类型 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| id | string | 是 | 对应请求中的唯一请求id |
-| nbr | integer | 否 | 无广告填充时返回，不填充的原因，详情见[不填充广告原因](#不填充广告原因) |
-| seatbid | array of object | 否 | 有广告填充时返回，广告信息 |
+| id | string | yes | unique request id |
+| nbr | integer | no | adresponse failed reason when there is no official adresponse, view[Ad response failed reason](#Ad response failed reason) |
+| seatbid | array of object | no | Ad information, if request succeed |
 
-##### seatbid 对象信息
+##### seatbid information
 
-| 字段名称 | 类型 | 必须 | 描述 |
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| bid | array of object | 是 | 广告信息 |
+| bid | array of object | yes | ad information |
                                                                                 
-###### bid 对象信息
-| 字段名称 | 类型 | 必须 | 描述 |
+###### bid information
+| parameter | type | mandatory | description |
 | --- | --- | --- | --- |
-| impid | string | 是 | 对应请求中的曝光id |
-| cid | string | 是 | 创意id |
-| w | integer | 否 | 广告物料宽度，单位：像素 |
-| h | integer | 否 | 广告物料高度，单位：像素 |
-| adm | string | 是 | 素材，详情见[素材格式](#素材格式)<br>图片类（HTML）：HTML<br>图片类（图片+落地页）：JSON<br>原生：JSON |
-| ext | object | 是 | 扩展字段 |
-| ext.instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 原生 |
-| ext.interact_type | integer | 是 | 用户点击行为<br>1- 浏览网页<br>2- 下载应用 |
-| ext.ad_logo | string | 否 | 广告来源LOGO图片 |
-| ext.ad_icon | string | 否 | "广告"字样图片 |
-| ext.deeplink | string | 否 | deeplink<br>如果终端安装了对应的APP，则跳转到deeplink<br>如果没有安装，则跳转普通落地页 |
-| ext.imp_t | array of string | 否 | 曝光监测，可能有多条，需要依次上报<br>监测链接中可能有宏，需要开发者替换，见[上报地址宏替换信息](#上报地址宏替换信息) |
-| ext.clk_t | array of string | 否 | 点击监测，可能有多条，需要依次上报<br>监测链接中可能有宏，需要开发者替换，见[上报地址宏替换信息](#上报地址宏替换信息) |
-| ext.ds_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用下载开始监测，可能有多条，需要依次上报 |
-| ext.dc_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用下载完成监测，可能有多条，需要依次上报 |
-| ext.ic_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用安装完成监测，可能有多条，需要依次上报 |
-| ext.op_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用打开监测，可能有多条，需要依次上报 |
+| impid | string | yes | impression id |
+| cid | string | yes | creative id |
+| w | integer | no | Ad width, unit: pixel |
+| h | integer | no | Ad height, unit: pixel |
+| adm | string | yes | Creative types of the ad response ,view[Ad format](#Ad format)<br>image（HTML）：HTML<br>image（image and text）：JSON<br>native：JSON |
+| ext | object | yes | expansion field |
+| ext.instl | integer | yes | adspace<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- native |
+| ext.interact_type | integer | yes | types of click action, <br>1- open the url within webview in-app<br>2- download App |
+| ext.ad_logo | string | no | Ad source Logo |
+| ext.ad_icon | string | no | “ad” character, It’s optional, publishers can use their own design. |
+| ext.deeplink | string | no | Redirect URL which of deep-link, use ’Click redirect URL’ if it doesn’t work. <br>If the app is installed beforehand, it redirects to the specific page,otherwise it redirects to the normal landing page.   |
+| ext.imp_t | array of string | no | Impression tracking URL,multiple reporting URLs should all be reported.<br>Client side shall substitute macro variables of click_tracking url ， target_url and Video information_url when reporting (if macro variable is existed) in pixels. view[Reporting the information of macro substitution](#Reporting the information of macro substitution) |
+| ext.clk_t | array of string | no | Click redirect URL,multiple reporting URLs should all be reported.<br>Client side shall substitute macro variables of click_tracking url ， target_url and Video information_url when reporting (if macro variable is existed) in pixels. view[Reporting the information of macro substitution](#Reporting the information of macro substitution) |
+| ext.ds_t | array of string | no | when ext.interact_type = 2 need to deal with this attribute.<br>Download performance tracker, client side needs to visit one by one when download triggered. ["url1","url2", ...]  |
+| ext.dc_t | array of string | no | when ext.interact_type = 2 need to deal with this attribute.<br>Download performance tracker, client side needs to visit one by one when the app download is finished. ["url1","url2", ...] 
+Android  |
+| ext.ic_t | array of string | no | when ext.interact_type = 2 need to deal with this attribute. <br>Download performance tracker, client side needs to visit one by one when the app is installed. ["url1","url2", ...]  |
+| ext.op_t | array of string | no |when ext.interact_type = 2 need to deal with this attribute.<br>Download performance tracker, client side needs to visit one by one when the app is opened. "url1","url2", ...]  |
 
-#### 素材格式
-- 图片类（图片+落地页）
+#### Creative forms
+- image（image+landing page）
 ```json
 {
-    // 图片地址
+    // image url
     "url": "",
-    // 落地页
+    // landing page
     "ldp": ""
 }
 ```
 
-- 原生
+- native
 ```json
 {
-    // 标题
+    // title
     "title": "",
-    // 描述
+    // description
     "desc": "",
-    // 大图（可能有单图或三图）
+    // image（single image or three images）
     "img": [
         {
-            // 图片地址
+            // image url
             "url": ""
         },
         {
-            // 图地址
+            // image url
             "url": ""
         },
         {
-            // 图地址
+            // image url
             "url": ""
         }
     ],
-    // 图标
+    // icon
     "icon": {
-        // 图标地址
+        // icon url
         "url": ""
     },
-    // 落地页
+    // landing page
     "ldp": ""
 }
 ```
 
-#### 上报地址宏替换信息
+#### Report click-macro information
 
-> 客户端在触发上报信息时，必须将监测链接中的宏变量替换上报。可能出现宏
-> 需要替换的宏坐标如下：
+> When Ad has been Start_play,end_play，show，clicked, Closed，client shall substitute macro variables of click_tracking url ， target_url and Video information_url when reporting (if macro variable is existed) in pixels. 
+> The following macros should all be substituted: 
 
-| 宏变量 | 类型 | 说明 |
+| macro | type | description |
 | --- | --- | --- |
-| {UUID} | string | 设备唯一标识<br>iOS 使用 IDFA， Android 使用 IMEI |
-| {LATITUDE} | float | 地理位置信息，纬度 |
-| {LONGITUDE} | float | 地理位置信息，经度 |
-| {CLICK_DOWN_X} | integer | 用户点击绝对坐标宏，用于回传用户点击坐标，广告位左上角为原点<br>获取用户点击落下的X坐标 |
-| {CLICK_DOWN_Y} | integer | 获取用户点击落下的绝对Y坐标 |
-| {CLICK_UP_X}   | integer | 获取用户点击抬起的绝对X坐标 |
-| {CLICK_UP_Y}   | integer | 获取用户点击抬起的绝对Y坐标 |
-| {R_CLICK_DOWN_X} | integer | 用户点击相对坐标宏，用于回传用户点击坐标相对于广告的位置，广告位左上角为原点，获取用户按下抬起坐标与广告右下角（广告最大尺寸值）的坐标的比，之后扩大 1000 倍取整数的结果<br>获取用户点击落下的相对X坐标 |
-| {R_CLICK_DOWN_Y} | integer | 获取用户点击落下的相对Y坐标 |
-| {R_CLICK_UP_X}   | integer | 获取用户点击抬起的相对X坐标 |
-| {R_CLICK_UP_Y}   | integer | 获取用户点击抬起的相对Y坐标 |
+| {UUID} | string | Unique identifer of device<br>Android use IMEI, ios use IDFA |
+| {LATITUDE} | float | Geo information, latitude  |
+| {LONGITUDE} | float | Geo information, longitude |
+| {CLICK_DOWN_X} | integer | The absolute X-axis value of where user clicks |
+| {CLICK_DOWN_Y} | integer | The absolute Y-axis value of where user clicks  |
+| {CLICK_UP_X}   | integer | The absolute X-axis value of when user’s fingers leave the screen  |
+| {CLICK_UP_Y}   | integer | The absolute Y-axis value of when user’s fingers leave the screen  |
+| {R_CLICK_DOWN_X} | integer | The relative X-axis value of where user clicks |
+| {R_CLICK_DOWN_Y} | integer | The relative Y-axis value of where user clicks |
+| {R_CLICK_UP_X}   | integer | The relative X-axis value of when user’s fingers leave the screen |
+| {R_CLICK_UP_Y}   | integer | The relative Y-axis value of when user’s fingers leave the screen |
 
-#### 不填充广告原因
+#### Ad response failed reason
 
-| 状态码 | 说明 |
+| code | description |
 | --- | --- |
-| 101 | 返回测试广告 |
-| 102 | 无测试广告且无正式广告返回 |
-| 105 | 广告位id无效 |
-| 301 | device.ext.imei 缺失 |
-| 302 | device.ext.androidid 缺失 |
-| 304 | device.ext.idfa 缺失 |
-| 311 | app.id 缺失 |
-| 312 | app.name 缺失 |
-| 313 | app.bundle 缺失 |
-| 314 | app.ver 缺失 |
-| 315 | device.os 缺失 |
-| 316 | device.os 无效 |
-| 317 | device.osv 缺失 |
-| 318 | device.carrier 缺失 |
-| 320 | device.connectiontype 缺失 |
-| 321 | device.connectiontype 无效 |
-| 322 | device.ip 缺失 |
-| 323 | device.make 缺失 |
-| 324 | device.model 缺失 |
-| 325 | device.w 缺失 |
-| 326 | device.h 缺失 |
-| 327 | device.devicetype 缺失 |
-| 328 | device.devicetype 无效 |
-| 341 | imp.instl 缺失 |
-| 342 | imp.instl 无效 |
-| 410 | device.ext.anid 格式错误 |
-| 411 | device.ext.imei 格式错误 |
-| 412 | device.ip 格式错误 |
-| 414 | device.ext.idfa 格式错误 |
-| 500 | 低质量流量 |
-| 900 | ADX 广告服务器内部错误，请联系平台 |
+| 101 | test ad response |
+| 102 | no test ad and official ads response |
+| 104 | BidRequest parsing JSON failed |
+| 105 | adspace id invalid |
+| 301 | device.ext.imei missing |
+| 302 | device.ext.androidid missing |
+| 304 | device.ext.idfa missing |
+| 311 | app.id missing |
+| 312 | app.name missing |
+| 313 | app.bundle missing |
+| 314 | app.ver missing |
+| 315 | device.os missing |
+| 316 | device.os invalid |
+| 317 | device.osv missing |
+| 318 | device.carrier missing |
+| 320 | device.connectiontype missing |
+| 321 | device.connectiontype invalid |
+| 322 | device.ip missing |
+| 323 | device.make missing |
+| 324 | device.model missing |
+| 325 | device.w missing |
+| 326 | device.h missing |
+| 327 | device.devicetype missing |
+| 328 | device.devicetype invalid |
+| 341 | imp.instl missing |
+| 342 | imp.instl invalid |
+| 351 | request id missing |
+| 352 | impression id missing |
+| 353 | device.ua missing |
+| 354 | device.ext.ppi missing |
+| 355 | device.ext.density missing |
+| 410 | device.ext.anid, wrong format |
+| 411 | device.ext.imei, wrong format |
+| 412 | device.ip, wrong format |
+| 414 | device.ext.idfa, wrong format |
+| 500 | low quality request |
+| 900 | ADX server internal error，please contact Advlion adx |
