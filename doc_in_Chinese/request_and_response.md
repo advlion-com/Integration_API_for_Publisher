@@ -85,7 +85,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 
 | 字段名称  | 类型 | 必须 | 描述 |
 | --- | --- | --- | --- |
-| dnt | integer | 否 | 0-允许广告追踪；1-不允许广告追踪 |
+| dnt | integer | 否 | 0- 允许广告追踪<br>1- 不允许广告追踪 |
 | ua | string | 是 | 移动设备的 User-Agent |
 | ip | string | 是 | 客户端IP地址。如果从客户端直接发起请求，该字段可填空字符串；如果从服务端发起请求，请填写客户端的IP |
 | ipv6 | string | 否 | ipv6 |
@@ -95,7 +95,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | geo.timestamp | integer | 否 | 获取经纬度数据时的时间戳 |
 | geo.country | string | 否 | 国家，使用 `ISO-3166-1 Alpha-3` |
 | geo.region | string | 否 | 地区，使用 `ISO 3166-2` |
-| geo.city | string | 否 | 城市，使用`http://www.unece.org/cefact/locode/service/location.html` |
+| geo.city | string | 否 | 城市，使用 `http://www.unece.org/cefact/locode/service/location.html` |
 | devicetype | integer | 是 | 设备类型<br>1- 手机<br>2- 平板 |
 | make | string | 是 | 设备制造商 |
 | model | string | 是 | 设备型号 |
@@ -104,16 +104,18 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | w | integer | 是 | 设备屏幕分辨率宽，单位为像素 |
 | h | integer | 是 | 设备屏幕分辨率高，单位为像素 |
 | ppi | float | 是 | 每英寸像素密度 |
-| carrier | string | 是 | 设备使用的运营商：MCC+MNC的值。没有则为空字符串。参考`http://en.wikipedia.org/wiki/Mobile_Network_Code` |
+| carrier | string | 是 | 设备使用的运营商：MCC+MNC的值。没有则为空字符串。参考 `http://en.wikipedia.org/wiki/Mobile_Network_Code` |
 | language | string | 否 | 设备的语言设置,使用 `alpha-2/ISO 639-1` |
 | js | integer | 否 | 是否支持 Javascript 脚本<br>1-支持<br>0-不支持 |
 | connectiontype | integer | 是 | 设备联网类型<br>1- wifi<br>2- 2G<br>3- 3G<br>4- 4G |
 | ext | object | 是 | 扩展字段 |
 | ext.orientation | integer | 否 | 设备屏幕方向<br>0- 竖向<br>1- 横向 |
-| ext.imei | string | 否 | Android 设备必填，IMEI 值 |
+| ext.imei | string | 否 | Android 设备的 IMEI 值 |
 | ext.idfa | string | 否 | iOS 设备必填，IDFA 值 |
-| ext.androidid | string | 否 | Android 设备选填，AndroidID |
-| ext.mac | string | 是 | MAC 值，没有填空字符串 |
+| ext.idfv | string | 否 | iOS 设备必填，IDFV 值 |
+| ext.androidid | string | 否 | Android 设备必填，AndroidID |
+| ext.gadid | string | 否 | Android 设备选填，Google Advertising ID<br>imei 或 gadid 必填其中一个 |
+| ext.mac | string | 否 | MAC 值，没有填空字符串 |
 | ext.imsi | string | 否 | 国际移动用户识别码，储存在 SIM 卡中 |
 | ext.battery | integer | 否 | 设备电量百分比，取整数，数值区间 0~100 |
 | ext.density | float | 是 | 设备屏幕像素密度 |
@@ -124,7 +126,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | --- | --- | --- | --- |
 | id | string | 否 | 用户唯一 ID |
 | yob | integer | 否 | 出生年，4 位数字 |
-| gender | string | 否 | 性别<br>M- Male<br>F- Female<br>O- Other<br>Null- Unknown |
+| gender | string | 否 | 性别<br>M- 男性<br>F- 女性<br>O- 其他<br>Null- 不确定 |
 | geo | object | 否 | 用户家庭位置 |
 | geo.lat | float | 否 | 纬度 |
 | geo.lon | float | 否 | 经度 |
@@ -170,6 +172,10 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | ext.dc_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用下载完成监测，可能有多条，需要依次上报 |
 | ext.ic_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用安装完成监测，可能有多条，需要依次上报 |
 | ext.op_t | array of string | 否 | ext.interact_type = 2 时可能返回<br>应用打开监测，可能有多条，需要依次上报 |
+| ext.d_app_name | string | 否 | ext.interact_type = 2 时可能返回<br>下载应用的名称 |
+| ext.d_app_icon | string | 否 | ext.interact_type = 2 时可能返回<br>下载应用的图标 |
+| ext.d_app_pkg | string | 否 | ext.interact_type = 2 时可能返回<br>下载应用的包名 |
+| ext.d_app_size | integer | 否 | ext.interact_type = 2 时可能返回<br>下载应用的大小 |
 
 #### 素材格式
 - 图片类（图片+落地页）
@@ -178,36 +184,50 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
     // 图片地址
     "url": "",
     // 落地页
-    "ldp": ""
+    "ldp": "",
+    // 广告标题，非必填
+    "title": "",
+    // 广告副标题，非必填
+    "subtitle": "",
+    // 广告描述，非必填
+    "desc": ""
 }
 ```
 
 - 原生
 ```json
 {
-    // 标题
+    // 标题，非必填
     "title": "",
-    // 描述
+    // 描述，非必填
     "desc": "",
     // 大图（可能有单图或三图）
     "img": [
         {
             // 图片地址
-            "url": ""
+            "url": "",
+            "w": 300,
+            "h": 250
         },
         {
             // 图地址
-            "url": ""
+            "url": "",
+            "w": 300,
+            "h": 250
         },
         {
             // 图地址
-            "url": ""
+            "url": "",
+            "w": 300,
+            "h": 250
         }
     ],
-    // 图标
+    // 图标，非必填
     "icon": {
         // 图标地址
-        "url": ""
+        "url": "",
+        "w": 300,
+        "h": 250
     },
     // 落地页
     "ldp": ""
@@ -241,7 +261,6 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | 102 | 无测试广告且无正式广告返回 |
 | 104 | BidRequest 解析 JSON 失败 |
 | 105 | 广告位id无效 |
-| 301 | device.ext.imei 缺失 |
 | 302 | device.ext.androidid 缺失 |
 | 304 | device.ext.idfa 缺失 |
 | 311 | app.id 缺失 |
