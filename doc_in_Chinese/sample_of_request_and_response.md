@@ -53,7 +53,7 @@
         "connectiontype": 1,
         "osv": "7.0.0",
         "devicetype": 1,
-        "h": "2160",
+        "h": 2160,
         "make": "Xiaomi",
         "ext": {
             "imei": "865736033717029",
@@ -65,7 +65,7 @@
         "dnt": 0,
         "ua": "Mozilla/5.0 (Linux; Android 8.0.0; MIX 2 Build/OPR1.170623.027; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36",
         "carrier": "46000",
-        "w": "1080",
+        "w": 1080,
         "model": "MIX2",
         "os": "Android"
     },
