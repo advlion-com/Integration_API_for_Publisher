@@ -161,6 +161,7 @@ The Ad Request is a request sent by Publisher to Advlion ADX to request an ad, v
 | h | integer | no | creative height pixel |
 | adm | string | yes | Creative types of the ad response,view [Ad format](#ad-format)<br>image（HTML）: HTML<br>image（image and landing page）: JSON<br>native: JSON |
 | ext | object | yes | expansion field |
+| ext.ctype | integer | 是 | adm type of banner/interstitial/full Screen<br>1- HTML<br>2- json |
 | ext.instl | integer | yes | adspace<br>0- banner<br>1- interstitial<br>2- full Screen<br>3- native |
 | ext.interact_type | integer | yes | types of click action, <br>1- open the url within webview in-app<br>2- download App |
 | ext.ad_logo | string | no | Ad source Logo |

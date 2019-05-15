@@ -161,6 +161,7 @@ AdRequest 请求是广告位请求广告的入口，由 SSP 按本文档中规�
 | h | integer | 否 | 广告物料高度，单位：像素 |
 | adm | string | 是 | 素材，详情见[素材格式](#素材格式)<br>图片类（HTML）：HTML<br>图片类（图片+落地页）：JSON<br>原生：JSON |
 | ext | object | 是 | 扩展字段 |
+| ext.ctype | integer | 是 | 横幅/插屏/开屏返回类型<br>1- HTML<br>2- json |
 | ext.instl | integer | 是 | 广告位类型<br>0- banner<br>1- 插屏<br>2- 开屏<br>3- 原生 |
 | ext.interact_type | integer | 是 | 用户点击行为<br>1- 浏览网页<br>2- 下载应用 |
 | ext.ad_logo | string | 否 | 广告来源LOGO图片 |
