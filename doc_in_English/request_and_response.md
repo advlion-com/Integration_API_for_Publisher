@@ -160,8 +160,8 @@ The Ad Request is a request sent by Publisher to Advlion ADX to request an ad, v
 | w | integer | no | creative width pixel |
 | h | integer | no | creative height pixel |
 | adm | string | yes | Creative types of the ad response,view [Ad format](#ad-format)<br>image（HTML）: HTML<br>image（image and landing page）: JSON<br>native: JSON |
-| ext | object | yes | expansion field |
-| ext.ctype | integer | 是 | adm type of banner/interstitial/full Screen<br>1- HTML<br>2- json |
+| ext | object | yes | Extended field |
+| ext.ctype | integer | yes | adm type of banner/interstitial/full Screen<br>1- HTML<br>2- json |
 | ext.instl | integer | yes | adspace<br>0- banner<br>1- interstitial<br>2- full Screen<br>3- native |
 | ext.interact_type | integer | yes | types of click action, <br>1- open the url within webview in-app<br>2- download App |
 | ext.ad_logo | string | no | Ad source Logo |
@@ -173,10 +173,10 @@ The Ad Request is a request sent by Publisher to Advlion ADX to request an ad, v
 | ext.dc_t | array of string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>Client side needs to visit one by one when the app has been downloaded. |
 | ext.ic_t | array of string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>Client side needs to visit one by one when the app has been installed. |
 | ext.op_t | array of string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>Client side needs to visit one by one when the app has benn opened. |
-| ext.d_app_name | string | 否 | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP name.|
-| ext.d_app_icon | string | 否 | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP icon url. |
-| ext.d_app_pkg | string | 否 | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP package name. |
-| ext.d_app_size | integer | 否 | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP package size. |
+| ext.d_app_name | string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP name.|
+| ext.d_app_icon | string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP icon url. |
+| ext.d_app_pkg | string | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP package name. |
+| ext.d_app_size | integer | no | When ext.interact_type = 2 publisher should deal with this attribute.<br>APP package size. |
 
 #### Creative forms
 - image（image + landing page）
