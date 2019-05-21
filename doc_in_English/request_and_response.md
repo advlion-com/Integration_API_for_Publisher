@@ -7,7 +7,7 @@
         - [URL of request](#url-of-request)
         - [HTTP Method and Encoding](#http-method-and-encoding)
         - [Request](#request)
-            - [Request Http Headers](#request-http-headers)
+            - [Request Head](#request-head)
             - [Request Json Fields](#request-json-fields)
                 - [Imp information](#imp-information)
                 - [App information](#app-information)
@@ -44,9 +44,9 @@ The protocol between Advlion ADX and Publisher is HTTP POST method, data using J
 
 The Ad Request is a request sent by Publisher to Advlion ADX to request an ad, via the Request URL noted above.
 
-#### Request Http Headers
+#### Request Head
 
-| http herder information | instruction  |
+| http head parameter | instruction  |
 | --- | --- |
 | X-Protocol-Ver | document version，F-1.0 |
 
